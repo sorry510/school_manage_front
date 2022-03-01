@@ -62,10 +62,11 @@ export function getAdminMessageList(type, params) {
  * @param string type
  * @returns
  */
-export function bingLine(type) {
+export function bingLine(type, data) {
   return request({
     url: `/api/${type}/bind-line`,
     method: 'post',
+    data,
   })
 }
 

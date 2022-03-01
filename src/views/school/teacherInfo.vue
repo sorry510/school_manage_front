@@ -3,34 +3,28 @@
     <span v-if="info.hasBindLine">line：已绑定</span>
     <el-button v-else type="text" @click="bindLine()">绑定line</el-button>
     <el-divider />
-    <span>用户名：{{ info.account }}</span>
+    <span>邮箱：{{ info.email }}</span>
     <el-divider />
     <span>姓名：{{ info.name }}</span>
     <el-divider />
     <span>创建时间：{{ info.created_at }}</span>
-    <el-divider />
-    <span>学校：{{ info.school }}</span>
-    <el-divider />
-    <span>描述：{{ info.school_remark }}</span>
   </div>
 </template>
 
 <script>
-import { getStudentInfo } from '@/api/student'
+import { getInfo } from '@/api/user'
 import { bingLine } from '@/api/user'
 import openWindow from '@/utils/open-window'
 
 export default {
-  name: 'StudentSchool',
+  name: 'TeacherInfo',
   data() {
     return {
       info: {
-        hasBindLine: true,
-        account: '',
+        hasBindLine: false,
+        email: '',
         name: '',
         created_at: '',
-        school: '',
-        school_remark: '无',
       },
       callback: false,
     }
@@ -54,7 +48,7 @@ export default {
           this.line = line
           this.callback = true
           try {
-            await bingLine('student', { line_id: line.id })
+            await bingLine('teacher', { line_id: line.id })
             this.info.hasBindLine = true
             this.$message({ message: '绑定成功', type: 'success' })
           } catch (e) {
@@ -72,7 +66,7 @@ export default {
       console.log(e)
     },
     async getInfo() {
-      const { data } = await getStudentInfo()
+      const { data } = await getInfo('teacher')
       this.info = data
     },
   },

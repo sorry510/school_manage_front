@@ -14,6 +14,12 @@ const schoolManage = {
   },
   children: [
     {
+      path: 'info',
+      component: () => import('@/views/school/teacherInfo'),
+      name: 'teacherInfo',
+      meta: { title: '个人信息', roles: ['teacher'] },
+    },
+    {
       path: 'list',
       component: () => import('@/views/school/index'),
       name: 'SchoolList',
