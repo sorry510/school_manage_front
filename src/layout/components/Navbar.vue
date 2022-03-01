@@ -33,7 +33,7 @@
           <img
             src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
             class="user-avatar"
-          >
+          />
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -54,6 +54,14 @@
       :dialog-visible="chatVisible"
       @closeDialog="chatVisible = false"
     />
+
+    <!-- 管理员推送的消息 -->
+    <el-dialog title="消息" :visible.sync="dialogVisible" width="40%">
+      <span>{{ adminMessage.content }}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -84,6 +92,11 @@ export default {
         nickname: '', // 接收者名称
         type: '', // 接收类型
         receiver_id: 0, // 接收人id
+      },
+      dialogVisible: false,
+      adminMessage: {
+        id: 0,
+        content: '',
       },
     }
   },
@@ -129,10 +142,10 @@ export default {
             // 当前用户学生,发起人是教师
             if (!this.chatTeacherIds.has(data.teacher_id)) {
               const notify = this.$notify({
-                title: '新消息',
+                title: '聊天消息',
                 message: `${data.teacher_name}的消息`,
                 position: 'bottom-right',
-                duration: 1000 * 30,
+                duration: 1000 * 60 * 5,
                 onClick: () => {
                   this.openChat({
                     nickname: data.teacher_name, // 接收者名称
@@ -144,14 +157,24 @@ export default {
               })
             }
           }
-          // if (this.params.type === 'teacher') {
-          //   // 发起人是学生
-          //   data.float = data.direction === 1 ? 'left' : 'right'
-          // } else if (this.params.type === 'student') {
-          //   // 发起人是教师
-          //   data.float = data.direction === 1 ? 'right' : 'left'
-          // }
         }
+      }
+    },
+    message(result) {
+      if (result && result.content) {
+        const notify = this.$notify({
+          title: '通知',
+          message:
+            result.content.substr(0, 15) +
+            (result.content.length > 15 ? '...' : ''),
+          position: 'bottom-right',
+          duration: 1000 * 60 * 5,
+          onClick: () => {
+            this.dialogVisible = true
+            this.adminMessage = result
+            notify.close()
+          },
+        })
       }
     },
   },

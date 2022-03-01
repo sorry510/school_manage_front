@@ -40,7 +40,7 @@ Vue.use(Element, {
 Vue.use(
   new VueSocketIO({
     debug: false,
-    connection: process.env.VUE_SOCKET_IO || 'http://localhost:12306',
+    connection: process.env.VUE_APP_SOCKET_IO,
     options: { autoConnect: false }, // 不自动开启
   })
 )

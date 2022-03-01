@@ -43,3 +43,16 @@ export function getChatHistory(type, params) {
     params,
   })
 }
+
+/**
+ * 管理员推送的消息
+ * @param {*} params
+ * @returns
+ */
+export function getAdminMessageList(type, params) {
+  return request({
+    url: `/api/${type}/admin-messages`,
+    method: 'get',
+    params,
+  })
+}
