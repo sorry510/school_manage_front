@@ -72,7 +72,8 @@
         type="success"
         style="width: 100%; margin-bottom: 30px"
         @click.native.prevent="handleLogin"
-      >登录</el-button>
+        >登录</el-button
+      >
 
       <div style="position: relative; margin-top: 30px">
         <el-button class="register-button" type="text">
@@ -89,7 +90,11 @@
       </div>
     </el-form>
 
-    <el-dialog title="第三方登录" :visible.sync="showDialog">
+    <el-dialog
+      title="第三方登录"
+      :visible.sync="showDialog"
+      custom-class="login-dialog"
+    >
       <social-sign />
     </el-dialog>
   </div>
@@ -140,7 +145,7 @@ export default {
   },
   watch: {
     $route: {
-      handler: function(route) {
+      handler: function (route) {
         const query = route.query
         if (query) {
           this.redirect = query.redirect
@@ -243,6 +248,10 @@ $cursor: #fff;
   .login-container .el-input input {
     color: $cursor;
   }
+}
+
+.login-dialog .el-dialog__body {
+  padding-top: 0px;
 }
 
 /* reset element-ui css */

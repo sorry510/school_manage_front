@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, lineLogin, logout, getInfo } from '@/api/user'
 import {
   getToken,
   setToken,
@@ -49,6 +49,23 @@ const actions = {
     const { username, password, type } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password, type })
+        .then((response) => {
+          const { data } = response
+          commit('SET_TOKEN', data.token)
+          commit('SET_TOKEN_TYPE', data.type)
+          setToken(data.token)
+          setTokenType(data.type)
+          resolve()
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
+  lineLogin({ commit }, info) {
+    return new Promise((resolve, reject) => {
+      lineLogin(info)
         .then((response) => {
           const { data } = response
           commit('SET_TOKEN', data.token)

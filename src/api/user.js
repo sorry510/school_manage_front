@@ -56,3 +56,28 @@ export function getAdminMessageList(type, params) {
     params,
   })
 }
+
+/**
+ * 绑定 line
+ * @param string type
+ * @returns
+ */
+export function bingLine(type) {
+  return request({
+    url: `/api/${type}/bind-line`,
+    method: 'post',
+  })
+}
+
+/**
+ * line-login
+ * @param {} data
+ * @returns
+ */
+export function lineLogin(data) {
+  return request({
+    url: `/api/line/login-in`,
+    method: 'post',
+    data,
+  })
+}
