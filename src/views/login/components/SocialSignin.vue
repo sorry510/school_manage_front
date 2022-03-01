@@ -14,7 +14,11 @@
           />
         </el-col>
         <el-col :span="24">
+          <span v-if="teachers.length === 0 && students.length === 0">
+            您没有绑定任何账号，无法登录
+          </span>
           <el-select
+            v-else
             v-model="value"
             placeholder="请选择账号"
             @change="handleLogin"
