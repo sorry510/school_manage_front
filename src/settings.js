@@ -1,5 +1,5 @@
 module.exports = {
-  title: '教务管理',
+  title: '教务系统',
 
   /**
    * @type {boolean} true | false

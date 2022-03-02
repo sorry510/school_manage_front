@@ -52,7 +52,7 @@ export default {
             this.info.hasBindLine = true
             this.$message({ message: '绑定成功', type: 'success' })
           } catch (e) {
-            this.$message({ message: '绑定失败', type: 'error' })
+            // this.$message({ message: '绑定失败', type: 'error' })
           }
           window.removeEventListener(
             'message',

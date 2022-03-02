@@ -8,7 +8,7 @@ const student = {
   redirect: 'noRedirect',
   name: 'SchoolManage',
   meta: {
-    title: '我的',
+    title: '学生管理',
     icon: 'component',
     roles: ['student'],
   },
@@ -23,7 +23,7 @@ const student = {
       path: 'teacher',
       component: () => import('@/views/student/teacher'),
       name: 'StudentTeachers',
-      meta: { title: '教师', roles: ['student'] },
+      meta: { title: '学校教师', roles: ['student'] },
     },
   ],
 }

@@ -29,7 +29,7 @@ const schoolManage = {
       path: 'apply',
       component: () => import('@/views/school/apply'),
       name: 'SchoolApply',
-      meta: { title: '我的学校申请', roles: ['teacher'] },
+      meta: { title: '我的申请', roles: ['teacher'] },
     },
     {
       path: 'follow',
