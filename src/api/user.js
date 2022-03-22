@@ -58,6 +58,19 @@ export function getAdminMessageList(type, params) {
 }
 
 /**
+ * 教师推送的通知
+ * @param {*} data
+ * @returns
+ */
+export function getTeacherMessageList(type, params) {
+  return request({
+    url: `/api/${type}/messages`,
+    method: 'get',
+    params,
+  })
+}
+
+/**
  * 绑定 line
  * @param string type
  * @returns

@@ -162,8 +162,11 @@ export default {
     },
     message(result) {
       if (result && result.content) {
+        const title = result.teacher
+          ? `来自【${result.teacher}】的通知`
+          : '来自【管理员】的通知'
         const notify = this.$notify({
-          title: '通知',
+          title,
           message:
             result.content.substr(0, 15) +
             (result.content.length > 15 ? '...' : ''),

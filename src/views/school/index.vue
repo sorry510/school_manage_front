@@ -15,7 +15,8 @@
         icon="el-icon-search"
         :loading="listLoading"
         @click="handleFilter"
-      >搜索</el-button>
+        >搜索</el-button
+      >
     </div>
 
     <el-table
@@ -84,7 +85,8 @@
             type="primary"
             style="margin-right: 5px"
             @click="handleOpenDrawer(row)"
-          >学生信息</el-button>
+            >学生信息</el-button
+          >
           <el-dropdown v-if="row.isAdmin === 1" trigger="click">
             <el-button size="mini">
               <i class="el-icon-more" />
@@ -140,7 +142,32 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
         <el-button type="primary" :loading="dialogLoading" @click="invite()">
-          确定</el-button>
+          确定</el-button
+        >
+      </div>
+    </el-dialog>
+
+    <el-dialog title="发送通知" :visible.sync="dialogMessageVisible">
+      <el-form
+        ref="dataMessage"
+        :model="messageInfo"
+        label-position="left"
+        label-width="70px"
+        style="width: 500px; margin-left: 50px"
+      >
+        <el-form-item label="内容">
+          <el-input v-model="messageInfo.content" type="textarea" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogMessageVisible = false">取消</el-button>
+        <el-button
+          type="primary"
+          :loading="dialogLoading"
+          @click="sendMessage()"
+        >
+          确定</el-button
+        >
       </div>
     </el-dialog>
 
@@ -170,7 +197,8 @@
           :loading="studentFormLoading"
           @click="addStudentSubmit()"
         >
-          确定</el-button>
+          确定</el-button
+        >
       </div>
     </el-dialog>
 
@@ -196,7 +224,16 @@
             icon="el-icon-search"
             :loading="studentListLoading"
             @click="handleStudentFilter"
-          >搜索</el-button>
+            >搜索</el-button
+          >
+          <el-button
+            v-waves
+            :disabled="messageInfo.student_ids.length === 0"
+            class="filter-item"
+            icon="el-icon-s-promotion"
+            @click="handleSendMessage"
+            >发送通知</el-button
+          >
         </div>
         <el-table
           v-loading="studentListLoading"
@@ -204,7 +241,9 @@
           border
           fit
           highlight-current-row
+          @selection-change="handleSelectionChange"
         >
+          <el-table-column type="selection" width="55" />
           <el-table-column
             type="index"
             prop="id"
@@ -254,6 +293,7 @@ import {
   invitationTeacher,
   getStudentList,
   addStudent,
+  sendMessage,
 } from '@/api/teacher'
 import waves from '@/directive/waves' // waves directive
 import drag from '@/directive/el-drag-dialog'
@@ -306,6 +346,13 @@ export default {
         type: 'student', // 接收类型
         receiver_id: 0, // 接收人id
       },
+
+      dialogMessageVisible: false,
+      messageInfo: {
+        student_ids: [],
+        content: '',
+      },
+      schoolStudents: [],
 
       visible: false,
       drawerVisible: false,
@@ -397,6 +444,29 @@ export default {
         this.studentListLoading = false
       }
     },
+    handleSendMessage() {
+      this.messageInfo.content = ''
+      this.dialogMessageVisible = true
+    },
+    async sendMessage() {
+      if (this.messageInfo.content === '') {
+        return
+      }
+      try {
+        this.dialogLoading = true
+        await sendMessage({
+          student_ids: this.messageInfo.student_ids.map((item) => item.id),
+          content: this.messageInfo.content,
+        })
+        this.$message({ message: '已发送通知', type: 'success' })
+        this.dialogLoading = false
+      } catch (e) {
+        this.dialogLoading = false
+      }
+    },
+    handleSelectionChange(val) {
+      this.messageInfo.student_ids = val
+    },
     async getInvitationList(school_id) {
       const { data } = await getTeacherInvitationList({ school_id })
       this.invitationList = data
@@ -418,7 +488,7 @@ export default {
       }
     },
     addStudentSubmit() {
-      this.$refs.dataStudent.validate(async(valid) => {
+      this.$refs.dataStudent.validate(async (valid) => {
         if (valid) {
           try {
             this.studentFormLoading = true

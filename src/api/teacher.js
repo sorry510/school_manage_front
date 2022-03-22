@@ -128,3 +128,16 @@ export function addStudent(data) {
     data,
   })
 }
+
+/**
+ * 发送通知
+ * @param {*} data
+ * @returns
+ */
+export function sendMessage(data) {
+  return request({
+    url: `/api/teacher/messages`,
+    method: 'post',
+    data,
+  })
+}
